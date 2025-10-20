@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+import warnings
 from importlib.util import find_spec
 from pathlib import Path
-import warnings
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
 
 import hydra
@@ -119,13 +119,13 @@ def enforce_tags(cfg: DictConfig, save_to_file: bool = False) -> None:
 # --------------------------------------------------------------------------------------
 # Lightning object instantiation utilities (from instantiators.py)
 # --------------------------------------------------------------------------------------
-def instantiate_callbacks(callbacks_cfg: DictConfig) -> List[Callback]:
+def instantiate_callbacks(callbacks_cfg: DictConfig) -> list[Callback]:
     """Instantiates callbacks from config.
 
     :param callbacks_cfg: A DictConfig object containing callback configurations.
     :return: A list of instantiated callbacks.
     """
-    callbacks: List[Callback] = []
+    callbacks: list[Callback] = []
 
     if not callbacks_cfg:
         log.warning("No callback configs found! Skipping..")
@@ -142,13 +142,13 @@ def instantiate_callbacks(callbacks_cfg: DictConfig) -> List[Callback]:
     return callbacks
 
 
-def instantiate_loggers(logger_cfg: DictConfig) -> List[Logger]:
+def instantiate_loggers(logger_cfg: DictConfig) -> list[Logger]:
     """Instantiates loggers from config.
 
     :param logger_cfg: A DictConfig object containing logger configurations.
     :return: A list of instantiated loggers.
     """
-    logger: List[Logger] = []
+    logger: list[Logger] = []
 
     if not logger_cfg:
         log.warning("No logger configs found! Skipping...")
@@ -169,7 +169,7 @@ def instantiate_loggers(logger_cfg: DictConfig) -> List[Logger]:
 # Logging utilities (from logging_utils.py)
 # --------------------------------------------------------------------------------------
 @rank_zero_only
-def log_hyperparameters(object_dict: Dict[str, Any]) -> None:
+def log_hyperparameters(object_dict: dict[str, Any]) -> None:
     """Controls which config parts are saved by Lightning loggers.
 
     Additionally saves:
@@ -180,7 +180,7 @@ def log_hyperparameters(object_dict: Dict[str, Any]) -> None:
         - `"model"`: The Lightning model.
         - `"trainer"`: The Lightning trainer.
     """
-    hparams: Dict[str, Any] = {}
+    hparams: dict[str, Any] = {}
 
     cfg: DictConfig = object_dict["cfg"]
     model = object_dict["model"]
@@ -312,7 +312,7 @@ def task_wrapper(task_func: Callable) -> Callable:
     :return: The wrapped task function.
     """
 
-    def wrap(cfg: omegaconf.DictConfig) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+    def wrap(cfg: omegaconf.DictConfig) -> tuple[dict[str, Any], dict[str, Any]]:
         # execute the task
         try:
             metric_dict, object_dict = task_func(cfg=cfg)
@@ -345,7 +345,7 @@ def task_wrapper(task_func: Callable) -> Callable:
     return wrap
 
 
-def get_metric_value(metric_dict: Dict[str, Any], metric_name: Optional[str]) -> Optional[float]:
+def get_metric_value(metric_dict: dict[str, Any], metric_name: str | None) -> float | None:
     """Safely retrieves value of the metric logged in LightningModule.
 
     :param metric_dict: A dict containing metric values.

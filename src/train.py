@@ -27,7 +27,7 @@ rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
 # more info: https://github.com/ashleve/rootutils
 # ------------------------------------------------------------------------------------ #
 
-from src.utils import ( # noqa: E402
+from src.utils import (  # noqa: E402
     RankedLogger,
     early_wandb_initialization,
     extras,

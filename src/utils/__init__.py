@@ -1,17 +1,17 @@
 """Public utilities exported for convenient importing."""
 
+from src.utils.pylogger import RankedLogger
 from src.utils.template_utils import (
+    early_wandb_initialization,
     enforce_tags,
-    print_config_tree,
+    extras,
+    get_metric_value,
     instantiate_callbacks,
     instantiate_loggers,
     log_hyperparameters,
-    early_wandb_initialization,
-    extras,
-    get_metric_value,
+    print_config_tree,
     task_wrapper,
 )
-from src.utils.pylogger import RankedLogger
 
 __all__ = [
     "RankedLogger",

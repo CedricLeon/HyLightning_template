@@ -225,4 +225,3 @@ This section simply lists the major changes I brought to the original template [
   - Either by using a specific name parameter in each Config Group option (config file) and `**kwargs` in the corresponding Modules.
   - Or by making it general and global in the "root" config file using Hydra interpolation system. Not that easy because it's impossible to interpolate in the Default List, see this [stackoverflow](https://stackoverflow.com/questions/67280041/interpolation-in-hydras-defaults-list-cause-and-error).
 - [ ] Add my Lightning Callback plotting reconstructions/predictions every $N$ epochs
-
