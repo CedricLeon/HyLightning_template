@@ -22,7 +22,7 @@ The main modifications are the following:
   - Switch `logger.wandb.offline` to `True`
   - Have the "Farm" running on the login node, i.e., with the command `wandb-osh`
 
-If you're just getting started with Hydra and Lightning, go check the [workshop](https://github.com/CedricLeon/Setup_Lightning_Hydra_template/tree/workshop) branch. It has less features than the main, but serves better educational purposes.
+If you're just getting started with Hydra and Lightning, go check the [workshop](https://github.com/CedricLeon/HyLightning_template/tree/workshop) branch. It has less features than the main, but serves better educational purposes.
 
 ## Installation
 
@@ -37,9 +37,9 @@ In both cases you first need to clone the template and rename the folder with `<
 
 ```bash
 # Clone the template
-git clone https://github.com/CedricLeon/Setup_Lightning_Hydra_template.git
+git clone https://github.com/CedricLeon/HyLightning_template.git
 # Rename the folder with your project name
-mv Setup_Lightning_Hydra_template/ <your_project_name>/
+mv HyLightning_template/ <your_project_name>/
 cd <your_project_name>/
 ```
 
