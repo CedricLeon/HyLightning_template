@@ -20,8 +20,5 @@ jobs:
         with:
           python-version: 3.11 # Force 'setuptools' to be installed, see https://ericmjl.github.io/blog/2023/10/29/how-to-debug-a-modulenotfounderror-in-the-interrogate-pre-commit-hook/
 
-      - name: Install pre-commit # Newer version that supports python_venv
-        run: pip install "pre-commit>=4.5.0"
-
       - name: Run pre-commits
         uses: pre-commit/action@v3.0.1
