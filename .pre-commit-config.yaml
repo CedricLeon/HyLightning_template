@@ -88,6 +88,8 @@ repos:
     hooks:
       - id: bandit
         args: ["-s", "B101"]
+        additional_dependencies:
+          - pbr>=6.0.0
 
   # # yaml formatting
   # - repo: https://github.com/pre-commit/mirrors-prettier
