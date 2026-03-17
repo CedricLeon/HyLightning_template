@@ -1,4 +1,5 @@
 # Your Project Name
+
 <div align="center">
 
 <a href="https://pytorch.org/get-started/locally/"><img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-ee4c2c?logo=pytorch&logoColor=white"></a>
@@ -16,6 +17,7 @@ This repo is just my fork from [ashleve/lightning-hydra-template](https://github
 Reference the [Modified from template](#modified-from-template) section to see the detailed changes or check [Features to come](#features-to-come) if you're motivate for a PR 😁.
 
 The main modifications are the following:
+
 - `hydra-submitit-launcher` is set up for an easier usage of SLURM, and add example config setups for clusters (JUWELS, Terrabyte to come)
 - Weight & Biases (W&B) logger became the default logger. Other loggers are still possible to use, but everything is setup by default for W&B.
 - W&B is improved with [wandb_osh](https://github.com/klieret/wandb-offline-sync-hook) to support offline, real-time logging of my runs on W&B. In this template, setting up wandb_osh is as easy as that:
@@ -80,17 +82,21 @@ git push --set-upstream origin main
 
 ### Set your conda environment
 
+Create and activate the conda environment (Python, PyTorch + all other deps). GPU support is handled automatically by conda based on your system's CUDA drivers.
+You should rename the conda environment in [environment.yaml](environment.yaml). Default is `myenv`.
+
 ```bash
-# Force python version 3.11 for compatibility reasons (pytorch)
-conda create -n <your_env_name> python=3.11
-conda activate <your_env_name>
-
-# /!\ install pytorch with GPU support, see https://pytorch.org/get-started/
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-
-# install requirements
-pip install -r requirements.txt
+conda env create -f environment.yaml
+conda activate myenv
 ```
+
+> **Note:** If you prefer a pure pip install (no conda), you must install PyTorch manually **first** to get GPU support, then install the project:
+>
+> ```bash
+> # GPU (adjust the CUDA version to match your drivers, see https://pytorch.org/get-started/locally/)
+> pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+> pip install -e .
+> ```
 
 ### Optional: Setup `pre-commit` hooks
 
@@ -187,6 +193,7 @@ python src/train.py experiment=example debug=default trainer=gpu
 ```
 
 ### Sweeping & Hyperparameter search
+
 @TODO: Add explanations how to run hyperparameter searches using W&B and Hydra, see [their nice integration post](https://docs.wandb.ai/guides/integrations/hydra/).
 
 ## Modified from template
@@ -203,11 +210,11 @@ This section simply lists the major changes I brought to the original template [
 ### More dependencies
 
 - Uncomment my favorite logger in `environment.yaml` (**wandb**) as well as in `requirements.txt`
-- Add additional requirements:
+- Add additional requirements in `pyproject.toml` (and keep `wandb` / pytorch in `environment.yaml` for conda users):
   - `hydra-submitit-launcher`
   - `torchgeo`
   - `wandb_osh` (Wandb Offline Sync Hook)
-- Uncomment `sh` in `requirements.txt` to allow the tests in `test_sweeps.py`
+- Enabled `sh` in `pyproject.toml` to allow the tests in `test_sweeps.py`
 
 ### CI/CD and Testing
 
@@ -217,6 +224,7 @@ This section simply lists the major changes I brought to the original template [
 - The tests to be executed in CI/CD are the `"not slow"` ones, for the same reason mentioned above
 
 ## Features to come
+
 @TODO
 
 - [ ] Add a submitit setup for Terrabyte

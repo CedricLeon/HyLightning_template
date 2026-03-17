@@ -56,7 +56,7 @@ def train(cfg: DictConfig) -> Tuple[Dict[str, Any], Dict[str, Any]]:
     if cfg.get("seed"):
         lightning.seed_everything(cfg.seed, workers=True)
     if cfg.get("determinism"):
-        # There is a weird incompatibilty between cloudpickle and cudnn; TypeError: cannot pickle '_Deterministic' object
+        # There is a weird incompatibility between cloudpickle and cudnn; TypeError: cannot pickle '_Deterministic' object
         # You can read more about it here: https://github.com/pytorch/pytorch/issues/48832 and https://github.com/cloudpipe/cloudpickle/issues/405
         # See https://github.com/ray-project/ray/issues/8569, for different fixes
         # One solution is to import torch in the train function

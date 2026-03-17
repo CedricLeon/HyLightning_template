@@ -22,24 +22,13 @@ channels:
 
 dependencies:
   - python=3.11
+  # pytorch and torchvision are installed via the pytorch conda channel, which
+  # automatically selects the right build (CPU or GPU) based on your system's CUDA drivers.
+  # All other project dependencies are pulled in by `pip install -e .` via pyproject.toml.
   - pytorch=2.*
   - torchvision=0.*
-  - lightning=2.*
-  - torchmetrics=0.*
-  - hydra-core=1.*
-  - rich=13.*
-  - pre-commit=3.*
-  - pytest=7.*
-
-  # --------- loggers --------- #
-  - wandb
-  # - neptune-client
-  # - mlflow
-  # - comet-ml
-  # - aim>=3.16.2 # no lower than 3.16.2, see https://github.com/aimhubio/aim/issues/2550
 
   - pip>=23
   - pip:
-      - hydra-optuna-sweeper
-      - hydra-colorlog
-      - rootutils
+      # Install the project and all its dependencies from pyproject.toml
+      - "-e ."
