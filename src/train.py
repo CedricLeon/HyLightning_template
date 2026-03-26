@@ -1,3 +1,4 @@
+import functools
 from typing import Any, Dict, List, Optional, Tuple
 
 import hydra
@@ -5,6 +6,7 @@ import lightning
 import rootutils
 import wandb
 from lightning import Callback, LightningDataModule, LightningModule, Trainer
+from lightning.pytorch.callbacks import ModelCheckpoint
 from lightning.pytorch.loggers import Logger
 from omegaconf import DictConfig, OmegaConf
 
@@ -26,7 +28,7 @@ rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
 # more info: https://github.com/ashleve/rootutils
 # ------------------------------------------------------------------------------------ #
 
-from src.utils import (
+from src.utils import (  # noqa: E402
     RankedLogger,
     early_wandb_initialization,
     extras,
@@ -101,6 +103,10 @@ def train(cfg: DictConfig) -> Tuple[Dict[str, Any], Dict[str, Any]]:
 
     if cfg.get("test"):
         log.info("Starting testing!")
+        # PyTorch 2.6+ changed torch.load default to weights_only=True.
+        # Checkpoints containing functools.partial (e.g. from partial optimizers/schedulers) must be explicitly allowlisted.
+        torch.serialization.add_safe_globals([functools.partial])
+        assert isinstance(trainer.checkpoint_callback, ModelCheckpoint)
         ckpt_path = trainer.checkpoint_callback.best_model_path
         if ckpt_path == "":
             log.warning("Best ckpt not found! Using current weights for testing...")
