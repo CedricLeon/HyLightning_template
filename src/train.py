@@ -8,6 +8,7 @@ from lightning import Callback, LightningDataModule, LightningModule, Trainer
 from lightning.pytorch.callbacks import ModelCheckpoint
 from lightning.pytorch.loggers import Logger
 from omegaconf import DictConfig, OmegaConf
+import functools
 
 rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
 # ------------------------------------------------------------------------------------ #
@@ -102,6 +103,9 @@ def train(cfg: DictConfig) -> Tuple[Dict[str, Any], Dict[str, Any]]:
 
     if cfg.get("test"):
         log.info("Starting testing!")
+        # PyTorch 2.6+ changed torch.load default to weights_only=True.
+        # Checkpoints containing functools.partial (e.g. from partial optimizers/schedulers) must be explicitly allowlisted.
+        torch.serialization.add_safe_globals([functools.partial])
         assert isinstance(trainer.checkpoint_callback, ModelCheckpoint)
         ckpt_path = trainer.checkpoint_callback.best_model_path
         if ckpt_path == "":
