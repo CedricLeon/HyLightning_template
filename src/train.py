@@ -8,7 +8,6 @@ from lightning import Callback, LightningDataModule, LightningModule, Trainer
 from lightning.pytorch.callbacks import ModelCheckpoint
 from lightning.pytorch.loggers import Logger
 from omegaconf import DictConfig, OmegaConf
-import functools
 
 rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
 # ------------------------------------------------------------------------------------ #
@@ -28,7 +27,7 @@ rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
 # more info: https://github.com/ashleve/rootutils
 # ------------------------------------------------------------------------------------ #
 
-from src.utils import ( # noqa: E402
+from src.utils import (  # noqa: E402
     RankedLogger,
     early_wandb_initialization,
     extras,
@@ -103,15 +102,14 @@ def train(cfg: DictConfig) -> Tuple[Dict[str, Any], Dict[str, Any]]:
 
     if cfg.get("test"):
         log.info("Starting testing!")
-        # PyTorch 2.6+ changed torch.load default to weights_only=True.
-        # Checkpoints containing functools.partial (e.g. from partial optimizers/schedulers) must be explicitly allowlisted.
-        torch.serialization.add_safe_globals([functools.partial])
         assert isinstance(trainer.checkpoint_callback, ModelCheckpoint)
         ckpt_path = trainer.checkpoint_callback.best_model_path
         if ckpt_path == "":
             log.warning("Best ckpt not found! Using current weights for testing...")
             ckpt_path = None
-        trainer.test(model=model, datamodule=datamodule, ckpt_path=ckpt_path)
+        # PyTorch 2.6+ changed torch.load default to weights_only=True, which breaks checkpoints
+        # containing partial optimizers/schedulers. Lightning 2.6+ exposes weights_only directly.
+        trainer.test(model=model, datamodule=datamodule, ckpt_path=ckpt_path, weights_only=False)
         log.info(f"Best ckpt path: {ckpt_path}")
 
     test_metrics = trainer.callback_metrics
