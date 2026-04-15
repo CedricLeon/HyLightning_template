@@ -8,9 +8,14 @@ updates:
   - package-ecosystem: "pip" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
-      interval: "daily"
+      interval: "weekly"  # daily will create a lot of noise; weekly is cleaner
     ignore:
       - dependency-name: "pytorch-lightning"
         update-types: ["version-update:semver-patch"]
       - dependency-name: "torchmetrics"
         update-types: ["version-update:semver-patch"]
+    groups:
+      python-dependencies:
+        applies-to: version-updates
+        patterns:
+          - "*"  # Groups ALL pip dependencies into one PR
